@@ -9,7 +9,7 @@ Application::Application(string title, unsigned int width, unsigned int height) 
 
 Application::~Application() {
 	if (window != nullptr) SDL_DestroyWindow(window);
-	if (renderer != nullptr) SDL_DestroyRenderer(renderer);
+	if (renderer != nullptr) delete renderer;
 
 	SDL_Quit();
 }
@@ -28,12 +28,14 @@ bool Application::init() {
 		return false;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	if (renderer == nullptr) {
+	SDL_Renderer* sdlRenderer = SDL_CreateRenderer(window, -1, 0);
+	if (sdlRenderer == nullptr) {
 		cout << "Could not create renderer: " << SDL_GetError() << '\n';
 
 		return false;
 	}
+
+	renderer = new Renderer(sdlRenderer);
 
 	return true;
 }
@@ -304,9 +306,9 @@ void Application::run() const {
 	const vector<complex<double>> X = Fourier::dft(x);
 
 	vector<Epicycle*> epicycles;
-	epicycles.push_back(new Epicycle(*this, Vector<double>(), 0, X[0]));
+	epicycles.push_back(new Epicycle(*renderer, Vector<double>(), 0, X[0]));
 	for (size_t i = 1; i < X.size(); i++) {
-		epicycles.push_back(new Epicycle(*this, epicycles[i - 1]->getCirclingPoint(), i, X[i]));
+		epicycles.push_back(new Epicycle(*renderer, epicycles[i - 1]->getCirclingPoint(), i, X[i]));
 	}
 
 	const double deltaTime = (2 * numbers::pi) / epicycles.size();
@@ -317,7 +319,7 @@ void Application::run() const {
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT) break;
 
-		clear();
+		renderer->clear();
 
 		for (auto& epicycle : epicycles) {
 			epicycle->draw(time);
@@ -326,35 +328,20 @@ void Application::run() const {
 		path.push_back(epicycles.back()->getCirclingPoint());
 		for (const auto& point : path) {
 			// TODO: Implement type conversion
-			drawPoint(VectorUInt(point.x, point.y));
+			renderer->drawPoint(VectorUInt(point.x, point.y));
 		}
 
-		render();
+		renderer->render();
 
-		time += deltaTime;
+		if (time >= 2 * numbers::pi) {
+			path.clear();
+
+			time = 0;
+		}
+		else {
+			time += deltaTime;
+		}
+
 		SDL_Delay(50);
 	}
-}
-
-void Application::drawLine(VectorUInt start, VectorUInt end, Color color) const {
-	setColor(color);
-	SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
-}
-
-void Application::drawPoint(VectorUInt position, Color color) const {
-	setColor(color);
-	SDL_RenderDrawPoint(renderer, position.x, position.y);
-}
-
-void Application::setColor(Color color) const {
-	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-}
-
-void Application::clear() const {
-	setColor(white);
-	SDL_RenderClear(renderer);
-}
-
-void Application::render() const {
-	SDL_RenderPresent(renderer);
 }
