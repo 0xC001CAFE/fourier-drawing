@@ -4,6 +4,7 @@
 
 #include "Renderer.h"
 #include "Vector.h"
+#include "Color.h"
 
 using namespace std;
 
@@ -19,5 +20,5 @@ public:
 	Epicycle(const Renderer& renderer, const Vector<double>& pivotPoint, unsigned int frequency, complex<double> fourier);
 
 	const Vector<double>& getCirclingPoint() const;
-	void draw(double time);
+	void draw(double time, const Color& color = black);
 };

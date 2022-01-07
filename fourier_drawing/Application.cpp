@@ -319,16 +319,16 @@ void Application::run() const {
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT) break;
 
-		renderer->clear();
+		renderer->clear(black);
 
 		for (auto& epicycle : epicycles) {
-			epicycle->draw(time);
+			epicycle->draw(time, white);
 		}
 
 		path.push_back(epicycles.back()->getCirclingPoint());
 		for (const auto& point : path) {
 			// TODO: Implement type conversion
-			renderer->drawPoint(VectorUInt(point.x, point.y));
+			renderer->drawPoint(VectorUInt(point.x, point.y), white);
 		}
 
 		renderer->render();
