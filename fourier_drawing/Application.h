@@ -2,6 +2,8 @@
 
 #include <string>
 #include <SDL.h>
+#include <vector>
+#include <complex>
 
 #include "Renderer.h"
 
@@ -20,5 +22,5 @@ public:
 	~Application();
 
 	bool init();
-	void run() const;
+	void run(const vector<complex<double>>& X) const;
 };

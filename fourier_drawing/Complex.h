@@ -46,6 +46,11 @@ namespace dft {
 	template <typename...>
 	struct ComplexList {};
 
+	template <typename... ITEMS>
+	void printComplexList(ComplexList<ITEMS...>) {
+		((std::cout << '(' << ITEMS::re << ", " << ITEMS::im << ')' << '\n'), ...);
+	}
+
 	using x = ComplexList<
 		complex_d<1., 0.>,	// --DFT--> 2
 		complex_d<2., -1.>,	// --DFT--> -2-2i
@@ -89,12 +94,12 @@ namespace dft {
 
 	template <size_t K, size_t N_MAX, typename SUM, typename... X_INPUT>
 	struct InnerLoop<K, N_MAX, N_MAX, SUM, X_INPUT...> {
-		//using type = complex_d<
-		//	SUM::re / N_MAX,
-		//	SUM::im / N_MAX
-		//>;
+		using type = complex_d<
+			SUM::re / N_MAX,
+			SUM::im / N_MAX
+		>;
 
-		using type = SUM;
+		//using type = SUM;
 	};
 
 	template <size_t, size_t, typename...>

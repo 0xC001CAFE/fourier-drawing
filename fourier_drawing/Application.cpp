@@ -40,7 +40,7 @@ bool Application::init() {
 	return true;
 }
 
-void Application::run() const {
+void Application::run(const vector<complex<double>>& X) const {
 	SDL_Event event;
 	double time = 0;
 
@@ -303,7 +303,7 @@ void Application::run() const {
 		{197.1, 232.5},
 	};
 
-	const vector<complex<double>> X = Fourier::dft(x);
+	//const vector<complex<double>> X = Fourier::dft(x);
 
 	vector<Epicycle*> epicycles;
 	epicycles.push_back(new Epicycle(*renderer, Vector<double>(), 0, X[0]));
