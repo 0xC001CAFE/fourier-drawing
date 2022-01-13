@@ -15,7 +15,7 @@ namespace Fourier {
 		return (2 * std::numbers::pi * k * n) / N;
 	}
 
-	template <size_t K, size_t N, size_t N_MAX, typename SUM, typename... X_INPUT>
+	template <size_t K, size_t N, size_t N_MAX, IsComplex SUM, typename... X_INPUT>
 	struct InnerLoop {
 		using type = InnerLoop<
 			K,
@@ -32,7 +32,7 @@ namespace Fourier {
 		>::type;
 	};
 
-	template <size_t K, size_t N_MAX, typename SUM, typename... X_INPUT>
+	template <size_t K, size_t N_MAX, IsComplex SUM, typename... X_INPUT>
 	struct InnerLoop<K, N_MAX, N_MAX, SUM, X_INPUT...> {
 		//using type = SUM;
 

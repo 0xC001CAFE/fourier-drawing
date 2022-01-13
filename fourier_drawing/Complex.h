@@ -13,19 +13,25 @@ struct GenericComplex {
 template <double RE, double IM>
 using Complex = GenericComplex<double, RE, IM>;
 
-template <typename A, typename B>
+template <typename T>
+concept IsComplex = requires(T) {
+	{decltype(T::re){}} -> std::same_as<double>;
+	{decltype(T::im){}} -> std::same_as<double>;
+};
+
+template <IsComplex A, IsComplex B>
 using ComplexAdd = Complex<
 	A::re + B::re,
 	A::im + B::im
 >;
 
-template <typename A, typename B>
+template <IsComplex A, IsComplex B>
 using ComplexMultiply = Complex<
 	A::re* B::re - A::im * B::im,
 	A::re* B::im + A::im * B::re
 >;
 
-template <typename...>
+template <IsComplex...>
 struct ComplexList {};
 
 template <typename... LIST>
@@ -42,15 +48,16 @@ std::vector<std::complex<double>> convertComplexList(ComplexList<LIST...>) {
 	return result;
 }
 
-template <size_t, typename...>
+template <size_t, typename... LIST>
+requires (IsComplex<LIST> && ...)
 struct ComplexListItem {};
 
-template <typename ITEM, typename... LIST>
+template <IsComplex ITEM, typename... LIST>
 struct ComplexListItem<0, ITEM, LIST...> {
 	using type = ITEM;
 };
 
-template <size_t INDEX, typename ITEM, typename... LIST>
+template <size_t INDEX, IsComplex ITEM, typename... LIST>
 struct ComplexListItem<INDEX, ITEM, LIST...> {
 	using type = ComplexListItem<INDEX - 1, LIST...>::type;
 };

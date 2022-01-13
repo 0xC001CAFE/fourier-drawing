@@ -15,7 +15,7 @@ std::vector<std::complex<double>> Fourier::dft(const std::vector<std::complex<do
 			sum += x[n] * std::complex<double>(cos(phi), -sin(phi));
 		}
 
-		sum /= N;
+		sum /= static_cast<double>(N);
 		X.push_back(sum);
 	}
 
