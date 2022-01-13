@@ -1,6 +1,6 @@
 #include "Epicycle.h"
 
-Epicycle::Epicycle(const Renderer& renderer, const Vector<double>& pivotPoint, unsigned int frequency, complex<double> fourier) : renderer(renderer), pivotPoint(pivotPoint), frequency(frequency), fourier(fourier) {}
+Epicycle::Epicycle(const Renderer& renderer, const Vector<double>& pivotPoint, unsigned int frequency, std::complex<double> fourier) : renderer(renderer), pivotPoint(pivotPoint), frequency(frequency), fourier(fourier) {}
 
 const Vector<double>& Epicycle::getCirclingPoint() const {
 	return circlingPoint;

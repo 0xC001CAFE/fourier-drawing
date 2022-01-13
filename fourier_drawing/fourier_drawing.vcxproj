@@ -156,6 +156,7 @@
     <ClInclude Include="Complex.h" />
     <ClInclude Include="Epicycle.h" />
     <ClInclude Include="Fourier.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
