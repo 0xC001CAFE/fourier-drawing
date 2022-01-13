@@ -2,23 +2,23 @@
 
 #include <string>
 #include <SDL.h>
+#include <vector>
+#include <complex>
 
 #include "Renderer.h"
 
-using namespace std;
-
 class Application {
 private:
-	const string title;
+	const std::string title;
 	const unsigned int width;
 	const unsigned int height;
 	SDL_Window* window;
 	Renderer* renderer;
 
 public:
-	Application(string title, unsigned int width, unsigned int height);
+	Application(std::string title, unsigned int width, unsigned int height);
 	~Application();
 
 	bool init();
-	void run() const;
+	void run(const std::vector<std::complex<double>>& drawing) const;
 };
