@@ -13,6 +13,5 @@ void Epicycle::draw(double time, const Color& color) {
 	circlingPoint.x = pivotPoint.x + radius * cos(phase + frequency * time);
 	circlingPoint.y = pivotPoint.y + radius * sin(phase + frequency * time);
 
-	// TODO: Implement type conversion
-	renderer.drawLine(VectorUInt(pivotPoint.x, pivotPoint.y), VectorUInt(circlingPoint.x, circlingPoint.y), color);
+	renderer.drawLine(pivotPoint.as<unsigned int>(), circlingPoint.as<unsigned int>(), color);
 }

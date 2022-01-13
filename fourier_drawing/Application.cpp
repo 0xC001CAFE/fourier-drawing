@@ -65,8 +65,7 @@ void Application::run(const std::vector<std::complex<double>>& drawing) const {
 
 		path.push_back(epicycles.back()->getCirclingPoint());
 		for (const auto& point : path) {
-			// TODO: Implement type conversion
-			renderer->drawPoint(VectorUInt(point.x, point.y), Color(0xff, 0xff, 0x00));
+			renderer->drawPoint(point.as<unsigned int>(), Color(0xff, 0xff, 0x00));
 		}
 
 		renderer->render();
