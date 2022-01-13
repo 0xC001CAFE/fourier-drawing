@@ -8,6 +8,13 @@ template <typename T, T RE, T IM>
 struct GenericComplex {
 	static constexpr T re = RE;
 	static constexpr T im = IM;
+
+	template <typename STREAM>
+	friend auto operator<<(STREAM& stream, GenericComplex) -> STREAM& {
+		stream << '(' << re << ", " << im << ')';
+
+		return stream;
+	}
 };
 
 template <double RE, double IM>
@@ -36,7 +43,7 @@ struct ComplexList {};
 
 template <typename... LIST>
 void printComplexList(ComplexList<LIST...>) {
-	((std::cout << '(' << LIST::re << ", " << LIST::im << ')' << '\n'), ...);
+	((std::cout << LIST{} << '\n'), ...);
 }
 
 template <typename... LIST>
