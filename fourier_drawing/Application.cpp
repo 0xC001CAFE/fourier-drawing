@@ -43,10 +43,10 @@ void Application::run(const std::vector<std::complex<double>>& drawing) const {
 	SDL_Event event;
 	double time = 0;
 
-	std::vector<Epicycle*> epicycles;
-	epicycles.push_back(new Epicycle(*renderer, Vector<double>(), 0, drawing[0]));
+	std::vector<std::unique_ptr<Epicycle>> epicycles;
+	epicycles.push_back(std::make_unique<Epicycle>(*renderer, Vector<double>(), 0, drawing[0]));
 	for (size_t i = 1; i < drawing.size(); i++) {
-		epicycles.push_back(new Epicycle(*renderer, epicycles[i - 1]->getCirclingPoint(), i, drawing[i]));
+		epicycles.push_back(std::make_unique<Epicycle>(*renderer, epicycles[i - 1]->getCirclingPoint(), i, drawing[i]));
 	}
 
 	const double deltaTime = (2 * std::numbers::pi) / epicycles.size();
